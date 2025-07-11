@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Screenshot Folders | TraceOn</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>') no-repeat;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 0;
+            position: relative;
+            z-index: 100;
+            animation: headerSlideDown 1s ease-out;
+        }
+
+        @keyframes headerSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo img {
+            width: 80px;
+            height: 60px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            filter: brightness(0) invert(1);
+        }
+
+        /* .header-logo h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        } */
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .header-nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+
+        .header-nav a:hover::before {
+            transform: scaleX(1);
+        }
+
+        .header-nav a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-role {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px 40px;
+            border-radius: 25px;
+            width: 450px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15),
+                0 10px 25px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            border-radius: 25px;
+            z-index: -1;
+            animation: rainbow 3s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rainbow {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        h2 {
+            color: white;
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 18px 35px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn.logout {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            box-shadow: 0 8px 25px rgba(244, 67, 54, 0.3);
+            margin-top: 25px;
+        }
+
+        .btn.logout:hover {
+            box-shadow: 0 15px 35px rgba(244, 67, 54, 0.4);
+        }
+
+        form {
+            position: relative;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 0 15px;
+            position: relative;
+            z-index: 100;
+            animation: footerSlideUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes footerSlideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-section p,
+        .footer-section li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+        }
+
+        /* Floating particles animation */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 20px;
+            height: 20px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 15px;
+            height: 15px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(3) {
+            width: 25px;
+            height: 25px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            33% {
+                transform: translateY(-20px) rotate(120deg);
+            }
+
+            66% {
+                transform: translateY(10px) rotate(240deg);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-nav {
+                gap: 20px;
+                order: 2;
+            }
+
+            .user-info {
+                order: 1;
+                margin-bottom: 10px;
+            }
+
+            .header-nav a {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+
+            .box {
+                width: 90%;
+                margin: 20px;
+                padding: 30px 25px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .footer-top {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-logo h1 {
+                font-size: 20px;
+            }
+
+            .header-nav {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Quick actions menu */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .quick-action {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .quick-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .quick-action-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+            display: block;
+        }
+    </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(120, 219, 226, 0.1) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        h2 {
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 50px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+            animation: slideDown 0.8s ease-out;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px 40px;
+            margin: 0 auto 50px auto;
+            max-width: 600px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 10px 20px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            animation: cardSlideIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .card:hover::after {
+            left: 100%;
+        }
+
+        .card:hover::before {
+            opacity: 0.6;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow:
+                0 35px 70px rgba(0, 0, 0, 0.15),
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card a {
+            display: block;
+            padding: 30px 25px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .card a:hover {
+            color: #f0f8ff;
+            transform: scale(1.02);
+        }
+
+        /* Folder icon animation */
+        .card a::before {
+            content: '📁';
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover a::before {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        /* Staggered animation for cards */
+        .card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .card:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .card:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+
+        .card:nth-child(9) {
+            animation-delay: 0.9s;
+        }
+
+        .card:nth-child(10) {
+            animation-delay: 1s;
+        }
+
+        @keyframes cardSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Floating background particles */
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-particle:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            top: 15%;
+            left: 10%;
+            animation: float1 12s ease-in-out infinite;
+        }
+
+        .floating-particle:nth-child(2) {
+            width: 40px;
+            height: 40px;
+            top: 70%;
+            right: 15%;
+            animation: float2 15s ease-in-out infinite;
+        }
+
+        .floating-particle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 30%;
+            animation: float3 18s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.1;
+            }
+
+            50% {
+                transform: translateY(-40px) rotate(180deg);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes float2 {
+
+            0%,
+            100% {
+                transform: translateX(0px) scale(1);
+                opacity: 0.1;
+            }
+
+            50% {
+                transform: translateX(40px) scale(1.2);
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes float3 {
+
+            0%,
+            100% {
+                transform: translate(0px, 0px) rotate(0deg);
+                opacity: 0.1;
+            }
+
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+                opacity: 0.25;
+            }
+
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+                opacity: 0.15;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .card-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 0 10px;
+            }
+
+            h2 {
+                font-size: 24px;
+                padding: 20px 25px;
+                margin-bottom: 30px;
+            }
+
+            .card a {
+                padding: 25px 20px;
+                font-size: 16px;
+            }
+
+            body {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-list {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 20px;
+                padding: 15px 20px;
+            }
+
+            .card a {
+                padding: 20px 15px;
+                font-size: 16px;
+            }
+        }
+
+        .h-100{
+            margin-top: 30px;
+            height: 70vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-logo">
+                <img src="{{ url_for('static', filename='traceon-logo.png') }}" alt="TraceOn Logo">
+            </div>
+            <nav class="header-nav">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/workers">Workers</a>
+                <a href="/reports">Reports</a>
+                <a href="/settings">Settings</a>
+                <a href="/about">About Us</a>
+            </nav>
+            <div class="user-info">
+                <div class="user-avatar">{{ session['username'][0].upper() }}</div>
+                <div>
+                    <div class="user-name">{{ session['username'] }}</div>
+                    <div class="user-role">Manager</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="h-100">
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+
+        <h2>{{ username }} ({{ worker_code }}) - Dates</h2>
+        <div class="card-list">
+            {% for folder in folders %}
+            <div class="card">
+                <a href="{{ url_for('list_worker_screenshots', worker_code=worker_code, date=folder.name) }}">
+                    {{ folder.name }}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-section">
+                    <h3>TraceOn Manager</h3>
+                    <p>Comprehensive monitoring dashboard for tracking worker productivity and system performance.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li><a href="/workers">Manage Workers</a></li>
+                        <li><a href="/reports">View Reports</a></li>
+                        <li><a href="/help">Help Center</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <ul>
+                        <li><a href="/screenshots">Screenshot Viewer</a></li>
+                        <li><a href="/analytics">Analytics</a></li>
+                        <li><a href="/export">Data Export</a></li>
+                        <li><a href="/integrations">Integrations</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="/contact">Contact Admin</a></li>
+                        <li><a href="/documentation">Documentation</a></li>
+                        <li><a href="/status">System Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TraceOn Manager Dashboard. Secure monitoring solutions.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

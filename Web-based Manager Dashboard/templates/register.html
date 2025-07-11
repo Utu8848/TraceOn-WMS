@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | TraceOn</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(120, 219, 226, 0.1) 0%, transparent 40%);
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideInUp 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+            animation: logoFloat 3s ease-in-out infinite;
+            filter: brightness(0) invert(1); /* Makes black logo white */
+            transition: none !important;     /* Disable hover transitions */
+            pointer-events: none;            /* Prevent hover interaction */
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
+        }
+
+        .form-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 50px 40px;
+            width: 450px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 10px 25px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: formSlideIn 1.2s ease-out 0.3s both;
+        }
+
+        .form-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            border-radius: 25px;
+            z-index: -1;
+            animation: rainbow 4s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        @keyframes formSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+            to { text-shadow: 0 4px 20px rgba(255, 255, 255, 0.2), 0 4px 15px rgba(0, 0, 0, 0.3); }
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: messageSlide 0.5s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        input[type="text"], input[type="password"] {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 18px 25px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            animation: inputSlideIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        input[type="text"]:nth-child(1) { animation-delay: 0.5s; }
+        input[type="text"]:nth-child(2) { animation-delay: 0.6s; }
+        input[type="text"]:nth-child(3) { animation-delay: 0.7s; }
+        .password-box { animation-delay: 0.8s; }
+
+        @keyframes inputSlideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .password-box {
+            position: relative;
+            animation: inputSlideIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+            margin-bottom: 7px;
+        }
+        .password-box input {
+            animation: inputSlideIn 0.8s ease-out forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        .password-box span {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) translateX(-20px);
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            user-select: none;
+            opacity: 0;
+            animation: eyeFadeSlide 0.8s ease-out 0.85s forwards;
+        }
+
+        .password-box span:hover {
+            transform: translateY(-50%) scale(1.2);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 18px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            animation: buttonSlideIn 0.8s ease-out 0.9s both;
+        }
+
+        @keyframes buttonSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes eyeFadeSlide {
+            to {
+                transform: translateY(-50%) translateX(0); /* Slide into position */
+                opacity: 1;
+            }
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        p {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 25px;
+            font-size: 14px;
+            animation: linkSlideIn 0.8s ease-out 1s both;
+        }
+
+        @keyframes linkSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* p a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            
+        }
+
+        p a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        p a:hover::after {
+            width: 100%;
+            
+        }
+
+        p a:hover {
+            color: #f0f8ff;
+            /* transform: translateY(-1px); */
+        /* } */ 
+        p {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 25px;
+            font-size: 15px;
+        }
+
+        p a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+            color: #f0f8ff;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 20px;
+            height: 20px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 15px;
+            height: 15px;
+            top: 70%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(3) {
+            width: 25px;
+            height: 25px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 6s;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.3; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 500px) {
+            .form-box {
+                width: 90%;
+                margin: 20px;
+                padding: 40px 30px;
+            }
+            
+            h2 {
+                font-size: 28px;
+            }
+            
+            input[type="text"], input[type="password"] {
+                padding: 15px 20px;
+                font-size: 15px;
+            }
+            
+            button {
+                padding: 15px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    
+    <div class="container">
+        <img src="{{ url_for('static', filename='traceon-logo.png') }}" alt="TraceOn Logo" class="logo">
+
+        <div class="form-box">
+            <h2>Register</h2>
+            {% if register_message %}
+                <p class="message">{{ register_message }}</p>
+            {% endif %}
+            <form method="POST" action="/register">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="email" placeholder="Email Address" required>
+                <input type="text" name="code" placeholder="Overseer Code" required>
+                <div class="password-box">
+                    <input type="password" name="password" id="registerPassword" placeholder="Password" required>
+                    <span onclick="togglePassword('registerPassword')">👁️</span>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+</body>
+</html>

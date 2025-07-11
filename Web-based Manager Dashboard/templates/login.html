@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TraceOn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideInUp 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: brightness(0) invert(1);
+            transition: none !important;
+            pointer-events: none;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        .form-box {
+            background: rgba(0, 80, 120, 0.25); /* ✅ Changed only this line */
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 50px 40px;
+            width: 450px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: formSlideIn 1.2s ease-out 0.3s both;
+        }
+
+        @keyframes formSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 30px;
+            font-weight: 350;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+            to { text-shadow: 0 4px 20px rgba(255, 255, 255, 0.2), 0 4px 15px rgba(0, 0, 0, 0.3); }
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: messageSlide 0.5s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input[type="text"], input[type="password"] {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 18px 25px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-right: 45px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            user-select: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 18px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .register-link {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 25px;
+            font-size: 15px;
+        }
+
+        .register-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+            color: #f0f8ff;
+        }
+
+        @media (max-width: 500px) {
+            .form-box {
+                width: 90%;
+                margin: 20px;
+                padding: 40px 30px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            input[type="text"], input[type="password"] {
+                padding: 15px 20px;
+                font-size: 15px;
+            }
+
+            button {
+                padding: 15px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='traceon-logo.png') }}" alt="TraceOn Logo" class="logo">
+
+        <div class="form-box">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Sign in to your TraceOn Account</p>
+
+            {% if login_message %}
+            <div class="message">{{ login_message }}</div>
+            {% endif %}
+
+            <form method="POST" action="/login">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="email" placeholder="Email Address" required>
+                <input type="text" name="code" placeholder="Overseer Code" required>
+                <div class="password-box">
+                    <input type="password" name="password" id="loginPassword" placeholder="Password" required >
+                    <span class="password-toggle" onclick="togglePassword('loginPassword')">👁️</span>
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
+
+            <p class="register-link">
+                Don't have an account? <a href="/register">Create one here</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            const toggle = input.nextElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                toggle.textContent = '👁️';
+            }
+        }
+    </script>
+</body>
+</html>

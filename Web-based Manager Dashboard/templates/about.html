@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Innovation Hub - Sustainable Tech Solutions</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style2.css') }}"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>') no-repeat;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 0;
+            position: relative;
+            z-index: 100;
+            animation: headerSlideDown 1s ease-out;
+        }
+
+        @keyframes headerSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+       
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo img {
+            width: 80px;
+            height: 60px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            filter: brightness(0) invert(1); 
+        }
+
+        /* .header-logo h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        } */
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .header-nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+
+        .header-nav a:hover::before {
+            transform: scaleX(1);
+        }
+
+        .header-nav a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+       
+
+
+        .user-name {
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-role {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            margin-top: 5px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+
+        
+        /* Footer Styles */
+        .footer {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 0 15px;
+            position: relative;
+            z-index: 100;
+            animation: footerSlideUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes footerSlideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-section p, .footer-section li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+        }
+
+        /* Floating particles animation */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 20px;
+            height: 20px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 15px;
+            height: 15px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(3) {
+            width: 25px;
+            height: 25px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+      
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-nav {
+                gap: 20px;
+                order: 2;
+            }
+
+            .user-info {
+                order: 1;
+                margin-bottom: 10px;
+            }
+
+            .header-nav a {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+
+            .box {
+                width: 90%;
+                margin: 20px;
+                padding: 30px 25px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+
+            .footer-top {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-logo h1 {
+                font-size: 20px;
+            }
+
+            .header-nav {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+         
+        }
+
+        
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <div class="header-logo">
+          <img
+            src="{{ url_for('static', filename='traceon-logo.png') }}"
+            alt="TraceOn Logo"
+          />
+        </div>
+        <nav class="header-nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/workers">Workers</a>
+          <a href="/reports">Reports</a>
+          <a href="/settings">Settings</a>
+          <a href="/about">About Us</a>
+        </nav>
+        <div class="user-info">
+          <div class="user-avatar">{{ session['username'][0].upper() }}</div>
+          <div>
+            <div class="user-name">{{ session['username'] }}</div>
+            <div class="user-role">Manager</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">
+              TraceOn
+              <span class="gradient-text">Work Monitoring System</span>
+            </h1>
+            <p class="hero-description">
+              Work monitoring platform that captures screen activity, analyzes
+              productivity, and respects privacy. Built for hybrid teams and
+              transforms oversight into insight
+            </p>
+            <div class="hero-buttons">
+              <a href="https://www.youtube.com/watch?v=6dVB4X0S9Oc">
+                <button class="btn btn-primary">
+                    <i class="fas fa-play"></i>
+                    Watch Demo
+                </button>
+              </a>
+              <button class="btn btn-secondary">
+                <i class="fab fa-github"></i>
+                View Code
+              </button>
+            </div>
+            <div class="hero-stats">
+              <div class="stat">
+                <h3>4</h3>
+                <p>UN SDG Goals</p>
+              </div>
+              <div class="stat">
+                <h3>100+</h3>
+                <p>Communities Impacted</p>
+              </div>
+              <div class="stat">
+                <h3>50%</h3>
+                <p>Energy Reduction</p>
+              </div>
+            </div>
+          </div>
+          <div class="hero-image">
+            <div class="image-container">
+              <div class="floating-card card-1">
+                <i class="fas fa-leaf"></i>
+                <span>Sustainable</span>
+              </div>
+              <div class="floating-card card-2">
+                <i class="fas fa-clock"></i> 
+                <span>Real-Time Monitoring</span>
+              </div>
+              <div class="floating-card card-3">
+                <i class="fas fa-chart-line"></i>
+                <span>Data Driven</span>
+              </div>
+              <div class="main-image">
+                <img
+                  src="{{ url_for('static', filename='logo.png') }}"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Details Section -->
+    <section id="project" class="project-details">
+      <div class="container">
+        <div class="section-header">
+          <h2>Project Overview</h2>
+          <p>
+            Get to know the team behind the innovation and the core problem
+            we're solving.
+          </p>
+        </div>
+
+        <div class="project-grid">
+          <div class="project-card glass">
+            <div class="card-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>Project Introduction</h3>
+            <p>
+              <strong>TraceOn</strong> Our team is focused on improving
+              workplace productivity and accountability by developing a system
+              that monitors and manages digital activity in an ethical and
+              effective way. Our project is a Work Monitoring System called
+              TraceOn that helps organizations monitor and evaluate employee
+              productivity in real-time. The system automatically captures
+              periodic screenshots, tracks application and website usage, and
+              presents this data in a secure dashboard for managerial review. 
+              Additionally, Generates productivity report by analyzing the screenshots.
+            </p>
+            <p>
+              In remote and hybrid workplaces, managers often struggle to ensure
+              accountability and measure actual work being done. This can lead
+              to reduced productivity, time misuse, and a lack of transparency.
+              Our system addresses this by offering a non-intrusive yet
+              effective way to track employee activity, ensuring fairness,
+              improving performance, and helping teams stay aligned.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UN SDG Goals Section -->
+    <section id="goals" class="sdg-goals">
+      <div class="container">
+        <div class="section-header">
+          <h2>UN Sustainable Development Goals</h2>
+          <p>
+            Our project contributes to achieving these critical global
+            objectives
+          </p>
+        </div>
+
+        <div class="goals-grid">
+          <div class="goal-card glass">
+            <div class="goal-img-wrapper">
+              <img
+                src="{{ url_for('static', filename='sdg8.png') }}"
+                alt="SDG 8"
+                class="goal-img"
+              />
+            </div>
+            <h3>Decent Work And Economic Growth</h3>
+            <p>
+              Supporting workplace productivity and accountability by tracking
+              employee activity through ethical digital monitoring, helping
+              organizations improve performance and time management.
+            </p>
+          </div>
+
+          <div class="goal-card glass">
+            <div class="goal-img-wrapper">
+              <img
+                src="{{ url_for('static', filename='sdg9.png') }}"
+                alt="SDG 9"
+                class="goal-img"
+              />
+            </div>
+            <h3>Industry, Innovation And Infrastructure</h3>
+            <p>
+              Strengthening digital infrastructure by providing a practical
+              employee monitoring system that enables managers to oversee remote
+              and hybrid teams efficiently.
+            </p>
+          </div>
+
+          <div class="goal-card glass">
+            <div class="goal-img-wrapper">
+              <img
+                src="{{ url_for('static', filename='sdg12.png') }}"
+                alt="SDG 12"
+                class="goal-img"
+              />
+            </div>
+            <h3>Responsible Technology Use</h3>
+            <p>
+              Encouraging responsible digital behavior by monitoring software
+              and website usage, which helps reduce time-wasting and improve
+              resource utilization in organizations.
+            </p>
+          </div>
+
+          <div class="goal-card glass">
+            <div class="goal-img-wrapper">
+              <img
+                src="{{ url_for('static', filename='sdg16.png') }}"
+                alt="SDG 16"
+                class="goal-img"
+              />
+            </div>
+            <h3>Fair Monitoring And Strong Governance</h3>
+            <p>
+              Enhancing organizational transparency and governance by ensuring
+              that workplace monitoring is conducted ethically, with clear
+              oversight and managerial accountability.
+            </p>
+          </div>
+        </div>
+
+        <div class="goals-description glass">
+          <h3>Why These Goals?</h3>
+          <p>
+            These four UN Sustainable Development Goals align perfectly with our
+            mission to create technology solutions that are not only innovative
+            but also environmentally responsible and socially impactful. Our
+            project supports these key UN SDGs by improving digital
+            productivity, ensuring ethical monitoring practices, and fostering
+            innovation in modern work environments. It contributes to fairer,
+            more efficient, and connected workplaces.
+          </p>
+          <div class="impact-metrics">
+            <div class="metric">
+              <i class="fas fa-chart-line"></i>
+              <span>Productivity Tracked</span>
+            </div>
+            <div class="metric">
+              <i class="fas fa-user-check"></i>
+              <span>Employee Accountability</span>
+            </div>
+            <div class="metric">
+              <i class="fas fa-desktop"></i>
+              <span>Smart Monitoring</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add this right after the SDG Goals section and before the Footer -->
+    <section id="design" class="design-solution">
+      <div class="container">
+        <div class="section-header">
+          <h2>Design & Solution</h2>
+          <p>
+            Innovative approach to remote work monitoring that balances
+            productivity tracking with employee privacy protection
+          </p>
+        </div>
+
+        <div class="cards-container">
+          <!-- Challenge Card -->
+          <div class="design-card glass">
+            <div class="card-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Challenge Analysis</h3>
+            <p>
+              The primary challenge addressed by TraceOn is the delicate balance
+              between effective remote work monitoring and employee privacy
+              protection.
+            </p>
+            <p>Traditional monitoring solutions often:</p>
+            <br />
+            <ul class="design-list">
+              <li>
+                <i class="fas fa-chevron-right"></i> Employ invasive
+                surveillance techniques
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Fail to provide contextual
+                work insights
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Breach employee privacy and
+                trust
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Lack intelligent activity
+                detection
+              </li>
+            </ul>
+          </div>
+
+          <!-- Solution Card -->
+          <div class="design-card glass">
+            <div class="card-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>Proposed Solution</h3>
+            <p>
+              TraceOn implements a hybrid approach combining periodic and
+              activity-triggered screenshot capture with intelligent privacy
+              filtering.
+            </p>
+            <p>Our solution features:</p>
+            <br />
+            <ul class="design-list">
+              <li>
+                <i class="fas fa-chevron-right"></i> OCR-based sensitive
+                information redaction
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Context-aware activity
+                monitoring
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Secure cloud-based storage
+                with Google Drive integration
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Role-based access control
+                for managers
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Automated folder
+                organization and data management
+              </li>
+            </ul>
+          </div>
+
+          <!-- Use Case Card -->
+          <div class="design-card glass">
+            <div class="card-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Use Case</h3>
+            <p>
+              TraceOn serves remote teams, hybrid organizations, and distributed
+              workforces requiring accountability measures without compromising
+              employee privacy.
+            </p>
+            <p>The system is particularly valuable for:</p>
+            <br />
+            <ul class="design-list">
+              <li>
+                <i class="fas fa-chevron-right"></i> Project-based teams needing
+                progress tracking
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Organizations with
+                compliance requirements
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Companies transitioning to
+                remote work models
+              </li>
+              <li>
+                <i class="fas fa-chevron-right"></i> Managers overseeing
+                distributed teams
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add this section after your Design & Solution section -->
+    <section id="technologies" class="tech-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Technologies & Tools</h2>
+          <p>The powerful technologies powering our innovative solution</p>
+        </div>
+
+        <div class="tech-grid">
+          <!-- Client-Side Technologies -->
+          <div class="tech-category glass">
+            <div class="tech-header">
+              <i class="fas fa-laptop-code"></i>
+              <h3>Client-Side</h3>
+            </div>
+            <div class="tech-items">
+              <div class="tech-item">
+                <i class="fab fa-python"></i>
+                <span>Python</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-window-maximize"></i>
+                <span>Tkinter</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-camera"></i>
+                <span>PyAutoGUI</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-eye"></i>
+                <span>Tesseract OCR</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-database"></i>
+                <span>SQLite</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Server-Side Technologies -->
+          <div class="tech-category glass">
+            <div class="tech-header">
+              <i class="fas fa-server"></i>
+              <h3>Server-Side</h3>
+            </div>
+            <div class="tech-items">
+              <div class="tech-item">
+                <i class="fas fa-flask"></i>
+                <span>Flask</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Flask-CORS</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-lock"></i>
+                <span>Werkzeug Security</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-code"></i>
+                <span>Jinja2</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cloud Integration -->
+          <div class="tech-category glass">
+            <div class="tech-header">
+              <i class="fas fa-cloud"></i>
+              <h3>Cloud Integration</h3>
+            </div>
+            <div class="tech-items">
+              <div class="tech-item">
+                <i class="fab fa-google-drive"></i>
+                <span>Google Drive API</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-folder"></i>
+                <span>Automated Folder Management</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security -->
+          <div class="tech-category glass">
+            <div class="tech-header">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Security</h3>
+            </div>
+            <div class="tech-items">
+              <div class="tech-item">
+                <i class="fas fa-eye-slash"></i>
+                <span>OCR Privacy Filtering</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-key"></i>
+                <span>Encrypted Authentication</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add this after your UN SDG Goals section -->
+    <section id="prototype" class="prototype-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Prototype Description</h2>
+          <p>
+            Our Minimum Viable Product (MVP) demonstrates core functionality
+            with a two-layer architecture
+          </p>
+        </div>
+
+        <!-- Architecture Overview -->
+        <div class="architecture-container glass">
+          <div class="architecture-card">
+            <div class="arch-icon">
+              <i class="fas fa-desktop"></i>
+            </div>
+            <div class="arch-content">
+              <h3>Worker Application</h3>
+              <p>
+                Desktop application with GUI for employee registration,
+                authentication, and real-time activity monitoring with
+                privacy-aware screenshot capture.
+              </p>
+            </div>
+          </div>
+
+          <div class="architecture-card">
+            <div class="arch-icon">
+              <i class="fas fa-tv"></i>
+            </div>
+            <div class="arch-content">
+              <h3>Manager Dashboard</h3>
+              <p>
+                Web-based interface for user management, authentication, and
+                secure access to organized screenshot data stored in cloud
+                folders.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section">
+          <h3 class="subsection-title">Key Features</h3>
+          <div class="features-grid">
+            <div class="feature-card glass">
+              <div class="feature-icon">
+                <i class="fas fa-user-lock"></i>
+              </div>
+              <div class="feature-content">
+                <h4>Authentication System</h4>
+                <p>Secure login with password hashing and role verification</p>
+              </div>
+            </div>
+
+            <div class="feature-card glass">
+              <div class="feature-icon">
+                <i class="fas fa-binoculars"></i>
+              </div>
+              <div class="feature-content">
+                <h4>Activity Monitoring</h4>
+                <p>
+                  Detects new windows, tabs, and domain changes using
+                  pygetwindow and psutil
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass">
+              <div class="feature-icon">
+                <i class="fas fa-eye-slash"></i>
+              </div>
+              <div class="feature-content">
+                <h4>Privacy Protection</h4>
+                <p>
+                  OCR-based filtering removes sensitive information before
+                  storage
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass">
+              <div class="feature-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+              </div>
+              <div class="feature-content">
+                <h4>Cloud Integration</h4>
+                <p>Automated hierarchical folder creation and management</p>
+              </div>
+            </div>
+
+            <div class="feature-card glass">
+              <div class="feature-icon">
+                <i class="fas fa-users-cog"></i>
+              </div>
+              <div class="feature-content">
+                <h4>Access Control</h4>
+                <p>Role-based permissions with Google Drive integration</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add this after your Prototype Description section -->
+    <section id="market" class="market-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Market Impact & Pledge</h2>
+          <p>
+            How TraceOn is transforming workplace monitoring with ethical
+            innovation
+          </p>
+        </div>
+
+        <!-- Market Analysis
+        <div class="market-analysis glass">
+          <h3><i class="fas fa-chart-line"></i> Market Analysis</h3>
+          <p>
+            The remote work monitoring market has experienced significant
+            growth, with organizations seeking solutions that balance
+            productivity tracking with employee privacy.
+          </p>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">67%</div>
+              <div class="stat-label">
+                of organizations use monitoring tools
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">45%</div>
+              <div class="stat-label">employees concerned about privacy</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">23%</div>
+              <div class="stat-label">
+                productivity increase with smart monitoring
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">89%</div>
+              <div class="stat-label">prefer transparent monitoring</div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Competitive Advantages -->
+        <div class="competitive-advantages glass">
+          <h3><i class="fas fa-trophy"></i> Competitive Advantages</h3>
+          <p>TraceOn differentiates itself in the market through:</p>
+
+          <div class="advantages-grid">
+            <div class="advantage-card">
+              <div class="advantage-icon">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <div class="advantage-content">
+                <h4>Privacy-First Design</h4>
+                <p>
+                  OCR-based sensitive information filtering ensures employee
+                  privacy
+                </p>
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <div class="advantage-content">
+                <h4>Context-Aware Monitoring</h4>
+                <p>
+                  Activity-triggered screenshots provide meaningful insights
+                </p>
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon">
+                <i class="fas fa-eye"></i>
+              </div>
+              <div class="advantage-content">
+                <h4>Transparent Approach</h4>
+                <p>Employees know when and why monitoring occurs</p>
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon">
+                <i class="fas fa-expand"></i>
+              </div>
+              <div class="advantage-content">
+                <h4>Scalable Architecture</h4>
+                <p>Cloud-based solution grows with organizational needs</p>
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon">
+                <i class="fas fa-coins"></i>
+              </div>
+              <div class="advantage-content">
+                <h4>Cost-Effective</h4>
+                <p>Automated processes reduce administrative overhead</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Market Positioning -->
+        <div class="market-positioning glass">
+          <h3><i class="fas fa-bullseye"></i> Market Positioning</h3>
+          <p>
+            TraceOn positions itself as the ethical alternative to invasive
+            monitoring solutions, targeting organizations that prioritize both
+            productivity and employee well-being.
+          </p>
+
+          <div class="positioning-grid">
+            <div class="positioning-item">
+              <i class="fas fa-leaf"></i>
+              <span>Progressive organizations valuing employee privacy</span>
+            </div>
+            <div class="positioning-item">
+              <i class="fas fa-globe"></i>
+              <span>Companies with distributed remote teams</span>
+            </div>
+            <div class="positioning-item">
+              <i class="fas fa-rocket"></i>
+              <span>Startups and SMEs seeking cost-effective monitoring</span>
+            </div>
+            <div class="positioning-item">
+              <i class="fas fa-building"></i>
+              <span>Enterprises requiring compliance-friendly solutions</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Our Commitment -->
+        <div class="commitment glass">
+          <h3><i class="fas fa-handshake"></i> Our Commitment</h3>
+          <p>
+            We pledge to continue developing TraceOn as a leading solution for
+            ethical remote work monitoring, maintaining our commitment to
+            privacy protection while delivering valuable productivity insights
+            to organizations worldwide.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final Product Section -->
+    <section id="product" class="product-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Final Product</h2>
+          <p>Our comprehensive work monitoring solution</p>
+        </div>
+
+        <!-- Development Process -->
+        <div class="product-subsection">
+          <h3 class="subsection-title">Development Process</h3>
+          <p class="subsection-description">
+            Our development process followed an agile MVP approach, focusing on
+            core functionality first:
+          </p>
+
+          <div class="process-steps">
+            <div class="process-card glass">
+              <div class="process-number">1</div>
+              <div class="process-content">
+                <h4>Research & Planning</h4>
+                <p>Analyzed market needs and privacy concerns</p>
+              </div>
+            </div>
+
+            <div class="process-card glass">
+              <div class="process-number">2</div>
+              <div class="process-content">
+                <h4>Architecture Design</h4>
+                <p>Developed two-layer client-server architecture</p>
+              </div>
+            </div>
+
+            <div class="process-card glass">
+              <div class="process-number">3</div>
+              <div class="process-content">
+                <h4>Core Development</h4>
+                <p>Built authentication, monitoring, and dashboard systems</p>
+              </div>
+            </div>
+
+            <div class="process-card glass">
+              <div class="process-number">4</div>
+              <div class="process-content">
+                <h4>Privacy Integration</h4>
+                <p>Implemented OCR-based sensitive data filtering</p>
+              </div>
+            </div>
+
+            <div class="process-card glass">
+              <div class="process-number">5</div>
+              <div class="process-content">
+                <h4>Cloud Integration</h4>
+                <p>Automated Google Drive storage and organization</p>
+              </div>
+            </div>
+
+            <div class="process-card glass">
+              <div class="process-number">6</div>
+              <div class="process-content">
+                <h4>Testing & Optimization</h4>
+                <p>Ensured reliability and user experience</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Features -->
+        <div class="product-subsection">
+          <h3 class="subsection-title">Product Features</h3>
+
+          <div class="features-columns">
+            <div class="feature-column glass">
+              <div class="feature-header">
+                <i class="fas fa-user-cog"></i>
+                <h4>Worker Application</h4>
+              </div>
+              <ul class="feature-list">
+                <li>
+                  <i class="fas fa-check-circle"></i> Secure authentication
+                  system
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Activity-based screenshot
+                  capture
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Privacy-aware OCR
+                  filtering
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Automated cloud upload
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Non-intrusive background
+                  operation
+                </li>
+              </ul>
+            </div>
+
+            <div class="feature-column glass">
+              <div class="feature-header">
+                <i class="fas fa-tv"></i>
+                <h4>Manager Dashboard</h4>
+              </div>
+              <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> Web-based interface</li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Worker registration
+                  management
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Organized screenshot
+                  viewing
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> One-click productivity report 
+                  generation
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Secure access control
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i> Google Drive integration
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Meet Our Team</h2>
+          <p>The brilliant minds behind TraceOn</p>
+        </div>
+
+        <div class="team-grid">
+          <!-- Team Member 1 -->
+          <div class="team-card glass">
+            <div class="team-img">
+              <img
+                src="{{ url_for('static', filename='anush.jpg') }}"
+                alt="Anush Neupane"
+              />
+            </div>
+            <h3>Anush Neupane</h3>
+            <p class="team-role">Frontend Developer</p>
+            <div class="team-social">
+              <a href="https://www.linkedin.com/in/mr-anushneupane/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" class="social-link"
+                ><i class="fab fa-linkedin"></i> LinkedIn</a
+              >
+            </div>
+          </div>
+
+          <!-- Team Member 2 -->
+          <div class="team-card glass">
+            <div class="team-img">
+              <img
+                src="{{ url_for('static', filename='bibek.jpg') }}"
+                alt="Bibek Karki"
+              />
+            </div>
+            <h3>Bibek Karki</h3>
+            <p class="team-role">Backend Developer</p>
+            <div class="team-social">
+              <a href="https://www.linkedin.com/in/bibekkarkinp/" class="social-link"
+                ><i class="fab fa-linkedin"></i> LinkedIn</a
+              >
+            </div>
+          </div>
+
+          <!-- Team Member 3 -->
+          <div class="team-card glass">
+            <div class="team-img">
+              <img
+                src="{{ url_for('static', filename='nishan.jpg') }}"
+                alt="Nishan Gayak"
+              />
+            </div>
+            <h3>Nisan Gayak</h3>
+            <p class="team-role">Frontend Developer</p>
+            <div class="team-social">
+              <a href="https://www.linkedin.com/in/nishan-gayak-b3495335a/" class="social-link"
+                ><i class="fab fa-linkedin"></i> LinkedIn</a
+              >
+            </div>
+          </div>
+
+          <!-- Team Member 4 -->
+          <div class="team-card glass">
+            <div class="team-img">
+              <img
+                src="{{ url_for('static', filename='utsav.jpg') }}"
+                alt="Utsav Rai"
+              />
+            </div>
+            <h3>Utsav Rai</h3>
+            <p class="team-role">Backend Developer</p>
+            <div class="team-social">
+              <a href="https://www.linkedin.com/in/utsav-rai/" class="social-link"
+                ><i class="fab fa-linkedin"></i> LinkedIn</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-top">
+          <div class="footer-section">
+            <h3>TraceOn Manager</h3>
+            <p>
+              Comprehensive Monitoring Dashboard for Tracking Worker
+              Productivity and System Performance.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="/dashboard">Dashboard</a></li>
+              <li><a href="/workers">Manage Workers</a></li>
+              <li><a href="/reports">View Reports</a></li>
+              <li><a href="/help">Help Center</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Tools</h3>
+            <ul>
+              <li><a href="/screenshots">Screenshot Viewer</a></li>
+              <li><a href="/analytics">Analytics</a></li>
+              <li><a href="/export">Data Export</a></li>
+              <li><a href="/integrations">Integrations</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Support</h3>
+            <ul>
+              <li><a href="/contact">Contact Admin</a></li>
+              <li><a href="/documentation">Documentation</a></li>
+              <li><a href="/status">System Status</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            &copy; 2025 TraceOn Manager Dashboard. Secure monitoring solutions.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='style.js') }}"></script>
+  </body>
+</html>
