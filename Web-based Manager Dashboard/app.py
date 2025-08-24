@@ -320,7 +320,7 @@ def generate_productivity_report(worker_code, date):
         except Exception as e:
             print(f"Error with {ss['name']}: {e}")
 
-    gemini_key = "AIzaSyDT-U5uEEifNM0U_pVA0YlqZJ1Ox0xP4O0"
+    gemini_key = "Gemini-API-key"
 
     # Use Gemini 2.5 Flash model
     gemini_url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={gemini_key}"
